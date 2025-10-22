@@ -3,6 +3,8 @@ import { useState } from "react";
 import UploadBox from "./components/UploadBox";
 import toast, { Toaster } from "react-hot-toast";
 import Result from "./components/Result";
+import Header from "./components/Header";
+import { AnimatePresence, motion } from "framer-motion";
 
 function App() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -77,18 +79,37 @@ function App() {
 
   return (
     <div className="flex flex-col items-center justify-center pt-4 gap-10">
-      <div className="flex flex-row items-center gap-4">
-        <img className="h-10" src="HPE_logo_wht_rev_rgb.png" alt="HPE" />
-        <p className="text-4xl text-[#f7f7f7]">+</p>
-        <img className="h-20" src="logo.png" alt="Logo" />
-      </div>
+      <Header />
 
-      <div className="h-68 w-100 mt-10 m-2">
-        {isUploaded ? (
-          <Result resultString={resultString} />
-        ) : (
-          <UploadBox isUploading={isUploading} onImageSelect={handleImageSelect} />
-        )}
+      <div className="h-68 w-100 mt-10 m-2 flex justify-center">
+        <AnimatePresence mode="wait">
+          {!isUploaded ? (
+            <motion.div
+              key="upload"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="w-full flex justify-center"
+            >
+              <UploadBox
+                isUploading={isUploading}
+                onImageSelect={handleImageSelect}
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="result"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="w-full flex justify-center"
+            >
+              <Result resultString={resultString} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       <div

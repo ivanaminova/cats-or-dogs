@@ -51,7 +51,7 @@ const UploadBox = ({ onImageSelect, isUploading }) => {
 
   return (
     <div
-      className={`flex flex-col items-center justify-center w-full h-full border-2 border-[#f7f7f7] rounded-2xl cursor-pointer shadow-lg transition-all duration-500 
+      className={`flex flex-col items-center justify-center w-[96%] h-full border-2 border-[#f7f7f7] rounded-2xl cursor-pointer shadow-lg transition-all duration-500 
     ${
       isDragging || image
         ? "bg-white/80 border-solid"
@@ -80,7 +80,7 @@ const UploadBox = ({ onImageSelect, isUploading }) => {
           className="object-contain w-48 h-48 rounded-xl"
         />
       ) : (
-        <div className="flex flex-col items-center text-[#f7f7f7] gap-1">
+        <div className="flex flex-col items-center gap-1">
           <CloudUpload size={34} strokeWidth={1.5} />
           <p className="font-medium">Click or drag & drop to upload an image</p>
         </div>
