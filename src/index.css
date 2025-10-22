@@ -1,1 +1,24 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: "HPEGraphik";
+  src: url("./assets/fonts/HPE Graphik-Regular.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  font-family: "HPEGraphik", sans-serif;
+}
+
+body {
+  background-image: url("liquid-cheese.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
