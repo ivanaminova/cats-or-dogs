@@ -10,7 +10,8 @@ function App() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
-  const [resultString, setResultString] = useState("");
+  const [resultResponse, setResultResponse] = useState("");
+  const [accuracyResponse, setAccuracyResponse] = useState(0);
 
   const handleImageSelect = (file) => {
     setSelectedImage(file);
@@ -26,23 +27,28 @@ function App() {
     toast.loading("Uploading... Please wait.");
 
     try {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
       const formData = new FormData();
       formData.append("image", selectedImage);
 
-      await new Promise((resolve) => setTimeout(resolve, 3000));
 
-      // const response = await fetch("neshto", {
-      //   method: "POST",
-      //   body: formData,
-      // });
-      //
-      // if (!response.ok) throw new Error("Upload failed");
-      //
-      // const data = await response.json();
-      // setResultString(data);
+      const response = await fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        body: formData,
+      });
+      
+      if (!response.ok) throw new Error("Upload failed");
+      
+      const data = await response.json();
+      const [prediction, accuracy] = data.split(" ");
+      prediction === "куче" ? setResultResponse("dog") : setResultResponse("cat");
+      setAccuracyResponse(accuracy);
+      setResultResponse(data);
 
-      const simulatedResponse = "dog";
-      setResultString(simulatedResponse);
+      const simulatedResponse = "cat";
+      const simulatedAccuracy = 1.234;
+      setResultResponse(simulatedResponse);
+      setAccuracyResponse(simulatedAccuracy);
 
       toast.dismiss();
       toast.success("Image uploaded successfully!");
@@ -59,7 +65,7 @@ function App() {
     setSelectedImage(null);
     setIsUploading(false);
     setIsUploaded(false);
-    setResultString("");
+    setResultResponse("");
   };
 
   const getButtonLabel = () => {
@@ -81,7 +87,7 @@ function App() {
     <div className="flex flex-col items-center justify-center pt-4 gap-10">
       <Header />
 
-      <div className="h-68 w-100 mt-10 m-2 flex justify-center">
+      <div className="h-76 w-120 mt-10 m-2 flex justify-center">
         <AnimatePresence mode="wait">
           {!isUploaded ? (
             <motion.div
@@ -106,7 +112,7 @@ function App() {
               transition={{ duration: 0.4, ease: "easeInOut" }}
               className="w-full flex justify-center"
             >
-              <Result resultString={resultString} />
+              <Result resultResponse={resultResponse} accuracyResponse={accuracyResponse}/>
             </motion.div>
           )}
         </AnimatePresence>

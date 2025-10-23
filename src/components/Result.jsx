@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Confetti from "react-confetti";
 
-const Result = ({ resultString }) => {
+const Result = ({ resultResponse, accuracyResponse }) => {
   const [showConfetti, setShowConfetti] = useState(true);
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
@@ -44,8 +44,9 @@ const Result = ({ resultString }) => {
         </div>
       )}
 
-      <p className="text-3xl font-semibold z-10">IT'S A {resultString.toUpperCase()}!</p>
-      <img className="h-60 z-10" src={`${resultString}.png`} alt={resultString} />
+      <p className="text-3xl font-semibold z-10">{resultResponse.toUpperCase()}</p>
+      <img className="h-60 z-10" src={`${resultResponse}.png`} alt={resultResponse} />
+      <p className="text-xl font-semibold z-10">Accuracy: {accuracyResponse.toFixed(3)}</p>
     </div>
   );
 };
